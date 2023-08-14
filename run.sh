@@ -1,10 +1,12 @@
 #!/bin/bash
 
-# Check if an argument is provided; if not, default to desktop
-LOG_FILE_PATH="$1"
-if [ -z "$LOG_FILE_PATH" ]; then
-  LOG_FILE_PATH="~/Desktop/tor.log"
+# If no argument is provided, run the Tor command without logging
+if [ -z "$1" ]; then
+  ./src/app/tor --RunAsDaemon 1 --ClientOnly 1 --UseEntryGuards 0
+else
+  # If an argument is provided, use it as the log file path
+  LOG_FILE_PATH="$1"
+  
+  # Run the Tor command with the provided log file path, including both "circ" and "net" logging
+  ./src/app/tor --RunAsDaemon 1 --ClientOnly 1 --UseEntryGuards 0 --Log "[circ]info file $LOG_FILE_PATH" --Log "[net]info file $LOG_FILE_PATH"
 fi
-
-# Run the Tor command with the provided or default log file path, including both "circ" and "net" logging
-./src/app/tor --ClientOnly 1 --UseEntryGuards 0 --Log "[circ]info file $LOG_FILE_PATH" --Log "[net]info file $LOG_FILE_PATH"
