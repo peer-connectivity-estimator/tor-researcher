@@ -1,7 +1,6 @@
 #!/bin/bash
 
 # Define the path to the torrc file
-# IMPORTANT: Update this path according to your actual Tor installation
 TORRC_PATH="./torrc"
 
 # Define the HiddenServiceDir relative to the current directory
@@ -11,6 +10,11 @@ HIDDEN_SERVICE_DIR="$(pwd)/HiddenServiceDir"
 if [ ! -d "$HIDDEN_SERVICE_DIR" ]; then
     echo "Creating $HIDDEN_SERVICE_DIR directory..."
     mkdir -p "$HIDDEN_SERVICE_DIR"
+    # Set the directory permissions to 700 as required by Tor
+    chmod 700 "$HIDDEN_SERVICE_DIR"
+else
+    # If the directory already exists, ensure it has the correct permissions
+    chmod 700 "$HIDDEN_SERVICE_DIR"
 fi
 
 # Reset the torrc file and write the minimal configuration
